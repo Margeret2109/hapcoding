@@ -3,171 +3,811 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Short-Answer Practice Questions - Human Anatomy & Physiology</title>
+    <title>Human Anatomy & Physiology | Study Quest</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .answer-content {
             display: none;
         }
+
         .answer-content.show {
             display: block;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 sm:p-8 border border-slate-200">
-        <!-- Header -->
-        <header class="border-b border-slate-200 pb-5 mb-6">
-            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 mb-1">Human Anatomy & Physiology - Quick Review</h1>
-            <p class="text-slate-600 text-xs sm:text-sm">8 Short-Answer Questions covering Chapters 1, 2, and 3.</p>
-        </header>
 
-        <!-- Controls -->
-        <div class="flex justify-end mb-6">
-            <button id="toggle-all-btn" onclick="toggleAllAnswers()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs sm:text-sm rounded-lg transition-colors shadow-sm">
-                Show All Answers
+<body class="bg-slate-50 text-slate-800 min-h-screen py-4 px-3 sm:py-8 sm:px-6 lg:px-8">
+
+<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-4 sm:p-6 md:p-8 border border-slate-200">
+
+    <!-- HEADER -->
+    <header class="border-b border-slate-200 pb-4 sm:pb-5 mb-5 sm:mb-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-600">
+                Your Study Quest ✨
+            </span>
+            <span class="text-xs rounded-full bg-amber-100 text-amber-800 px-3 py-1 font-semibold">
+                Small steps count!
+            </span>
+        </div>
+
+        <h1 class="text-lg sm:text-2xl font-bold text-slate-900 mb-1">
+            Human Anatomy & Physiology - Quick Review
+        </h1>
+
+        <p class="text-slate-600 text-xs sm:text-sm">
+            8 Short-Answer Questions covering Chapters 1, 2, and 3.
+        </p>
+    </header>
+
+
+    <!-- STUDY POINTS DASHBOARD -->
+    <section class="rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-4 sm:p-5 mb-5 sm:mb-6 shadow-sm">
+
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <p class="text-indigo-100 text-xs uppercase tracking-wider font-semibold">
+                    Your study points
+                </p>
+
+                <p class="text-2xl sm:text-3xl font-extrabold mt-1">
+                    <span id="xp-count">0</span> XP ⭐
+                </p>
+
+                <p class="text-indigo-100 text-xs mt-1">
+                    Mark a question as mastered to earn 10 XP.
+                </p>
+            </div>
+
+            <div class="text-3xl sm:text-4xl">🚀</div>
+        </div>
+
+        <div class="mt-4 sm:mt-5">
+            <div class="flex justify-between text-xs mb-2">
+                <span>Study progress</span>
+                <span id="progress-label">0 / 8 mastered</span>
+            </div>
+
+            <div class="h-3 rounded-full bg-white/25 overflow-hidden">
+                <div id="progress-bar"
+                    class="h-full rounded-full bg-amber-300 transition-all duration-500"
+                    style="width:0%">
+                </div>
+            </div>
+
+            <p id="level-message" class="text-xs text-indigo-100 mt-2">
+                Every question you understand is a win. You’ve got this!
+            </p>
+        </div>
+    </section>
+
+
+    <!-- TIMER AND MOTIVATION -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5 sm:mb-6">
+
+        <!-- FOCUS TIMER -->
+        <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+
+            <p class="text-xs font-bold uppercase tracking-wider text-slate-500">
+                ⏳ Focus timer
+            </p>
+
+            <p id="timer-display"
+                class="text-2xl sm:text-3xl font-extrabold text-slate-800 my-2 tabular-nums">
+                25:00
+            </p>
+
+            <p class="text-xs text-slate-500 mb-3">
+                Try one focused 25-minute study session, then take a short break.
+            </p>
+
+            <div class="flex flex-wrap gap-2">
+                <button id="timer-start"
+                    onclick="startTimer()"
+                    class="rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 py-2 flex-1 sm:flex-none">
+                    Start
+                </button>
+
+                <button onclick="pauseTimer()"
+                    class="rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-2 flex-1 sm:flex-none">
+                    Pause
+                </button>
+
+                <button onclick="resetTimer()"
+                    class="rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-semibold px-3 py-2 w-full sm:w-auto">
+                    Reset
+                </button>
+            </div>
+
+            <p id="timer-message" class="text-xs text-indigo-600 mt-3">
+                Ready when you are!
+            </p>
+        </div>
+
+
+        <!-- MOTIVATIONAL MESSAGES -->
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 flex flex-col justify-between">
+
+            <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-amber-700">
+                    💡 A little reminder
+                </p>
+
+                <p id="motivation-quote"
+                    class="text-sm sm:text-base font-semibold text-amber-950 mt-3">
+                    You don't have to know everything today. Just learn one thing at a time.
+                </p>
+            </div>
+
+            <button onclick="newQuote()"
+                class="self-start mt-4 rounded-lg bg-white border border-amber-200 hover:bg-amber-100 text-amber-800 text-xs font-semibold px-3 py-2">
+                Give me another reminder ↗
             </button>
         </div>
+    </section>
 
-        <!-- Questions List -->
-        <div class="space-y-5">
-            <!-- Q1 -->
-            <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">1. How does anatomy differ from physiology, and what is the relationship between structure and function?</h3>
-                    <button onclick="toggleAnswer(1)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-1" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p><strong>Anatomy</strong> is the study of the structure or physical form of the body, whereas <strong>physiology</strong> is the study of how body parts function. The relationship is that <em>structure determines function</em>—a body part's function depends directly on how it is built.</p>
-                </div>
-            </div>
 
-            <!-- Q2 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">2. Explain the difference between catabolism and anabolism with a simple physiological example.</h3>
-                    <button onclick="toggleAnswer(2)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-2" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p><strong>Catabolism</strong> breaks down complex chemical compounds into simpler ones (releasing energy), while <strong>anabolism</strong> builds complex molecules from smaller components (requiring energy). <em>Example:</em> Digestion catabolizes proteins in food into amino acids, which are then used by cells to anabolize new muscle tissue proteins.</p>
-                </div>
-            </div>
+    <!-- QUESTION CONTROLS -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5 sm:mb-6">
 
-            <!-- Q3 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">3. Why are the heads of phospholipid molecules in the cell membrane oriented outward while the tails face inward?</h3>
-                    <button onclick="toggleAnswer(3)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-3" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p>The phospholipid <strong>heads are hydrophilic</strong> ("water-loving") and interact with the watery intracellular and extracellular fluids. The <strong>tails are hydrophobic</strong> ("water-fearing") and avoid water by pointing inward toward the center of the membrane bilayer.</p>
-                </div>
-            </div>
+        <p class="text-sm font-semibold text-slate-700">
+            🎯 Your 8-question challenge
+        </p>
 
-            <!-- Q4 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">4. How does the active transport of the Sodium-Potassium pump (Na+ / K+ ATPase) differ from passive facilitated diffusion?</h3>
-                    <button onclick="toggleAnswer(4)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-4" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p>Facilitated diffusion moves substances passively down their concentration gradient without energy. The Sodium-Potassium pump uses <strong>ATP energy</strong> for active transport to move Sodium out of the cell and Potassium into the cell <strong>against their concentration gradients</strong>.</p>
-                </div>
-            </div>
-
-            <!-- Q5 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">5. Contrast transcription and translation in terms of what is produced and where in the cell each stage occurs.</h3>
-                    <button onclick="toggleAnswer(5)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-5" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p>• <strong>Transcription:</strong> Occurs in the <em>nucleus</em>; copies genetic code from DNA into mRNA.<br>• <strong>Translation:</strong> Occurs in the <em>cytoplasm (at ribosomes)</em>; decodes mRNA into a sequence of amino acids to construct a protein.</p>
-                </div>
-            </div>
-
-            <!-- Q6 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">6. Compare the chromosome counts and genetic outcomes of daughter cells produced by mitosis versus meiosis.</h3>
-                    <button onclick="toggleAnswer(6)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-6" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p>• <strong>Mitosis:</strong> Produces 2 genetically identical diploid cells (46 chromosomes each) for body growth/repair.<br>• <strong>Meiosis:</strong> Produces 4 genetically different haploid cells (23 chromosomes each) for gametes (sperm/egg).</p>
-                </div>
-            </div>
-
-            <!-- Q7 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">7. How does the arrangement of collagen fibers differ between dense regular and dense irregular connective tissue?</h3>
-                    <button onclick="toggleAnswer(7)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-7" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p>In <strong>dense regular connective tissue</strong>, collagen fibers are tightly packed in parallel bundles (providing strength in one direction, like in tendons). In <strong>dense irregular connective tissue</strong>, collagen fibers are arranged randomly in multiple directions (providing tensile strength in many directions, like in the dermis).</p>
-                </div>
-            </div>
-
-            <!-- Q8 -->
-            <div class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <h3 class="font-semibold text-slate-900 text-sm sm:text-base">8. What are the two main cell types in nervous tissue, and what are their basic roles?</h3>
-                    <button onclick="toggleAnswer(8)" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition-colors whitespace-nowrap">
-                        Toggle Answer
-                    </button>
-                </div>
-                <div id="answer-8" class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
-                    <p class="font-medium text-indigo-700 mb-1">Answer:</p>
-                    <p>• <strong>Neurons:</strong> Nerve cells that generate and transmit electrical nerve impulses.<br>• <strong>Neuroglia:</strong> Non-conductive cells that support, nourish, insulate, and protect neurons.</p>
-                </div>
-            </div>
-        </div>
+        <button id="toggle-all-btn"
+            onclick="toggleAllAnswers()"
+            class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs sm:text-sm rounded-lg transition-colors shadow-sm">
+            Show All Answers
+        </button>
     </div>
 
-    <script>
-        let allShown = false;
 
-        function toggleAnswer(id) {
-            const el = document.getElementById(`answer-${id}`);
-            el.classList.toggle('show');
+    <!-- QUESTIONS -->
+    <div class="space-y-4 sm:space-y-5">
+
+
+        <!-- QUESTION 1 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    1. How does anatomy differ from physiology, and what is the relationship between structure and function?
+                </h3>
+
+                <button onclick="toggleAnswer(1)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-1"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    <strong>Anatomy</strong> is the study of the structure or physical form of the body, whereas
+                    <strong>physiology</strong> is the study of how body parts function.
+
+                    The relationship is that <em>structure determines function</em>—a body part's function depends directly on how it is built.
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-1" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-1"
+                    onclick="toggleMastery(1)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 2 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    2. Explain the difference between catabolism and anabolism with a simple physiological example.
+                </h3>
+
+                <button onclick="toggleAnswer(2)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-2"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    <strong>Catabolism</strong> breaks down complex chemical compounds into simpler ones (releasing energy), while
+                    <strong>anabolism</strong> builds complex molecules from smaller components (requiring energy).
+
+                    <em>Example:</em> Digestion catabolizes proteins in food into amino acids, which are then used by cells to anabolize new muscle tissue proteins.
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-2" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-2"
+                    onclick="toggleMastery(2)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 3 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    3. Why are the heads of phospholipid molecules in the cell membrane oriented outward while the tails face inward?
+                </h3>
+
+                <button onclick="toggleAnswer(3)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-3"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    The phospholipid <strong>heads are hydrophilic</strong> ("water-loving") and interact with the watery intracellular and extracellular fluids.
+
+                    The <strong>tails are hydrophobic</strong> ("water-fearing") and avoid water by pointing inward toward the center of the membrane bilayer.
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-3" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-3"
+                    onclick="toggleMastery(3)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 4 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    4. How does the active transport of the Sodium-Potassium pump (Na+/K+ ATPase) differ from passive facilitated diffusion?
+                </h3>
+
+                <button onclick="toggleAnswer(4)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-4"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    Facilitated diffusion moves substances passively down their concentration gradient without energy.
+
+                    The Na+/K+ pump uses <strong>ATP energy</strong> for active transport to move Na+ out of the cell and K+ into the cell
+                    <strong>against their concentration gradients</strong>.
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-4" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-4"
+                    onclick="toggleMastery(4)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 5 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    5. Contrast transcription and translation in terms of what is produced and where in the cell each stage occurs.
+                </h3>
+
+                <button onclick="toggleAnswer(5)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-5"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    • <strong>Transcription:</strong> Occurs in the <em>nucleus</em>; copies genetic code from DNA into mRNA.
+
+                    <br><br>
+
+                    • <strong>Translation:</strong> Occurs in the <em>cytoplasm (at ribosomes)</em>; decodes mRNA into a sequence of amino acids to construct a protein.
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-5" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-5"
+                    onclick="toggleMastery(5)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 6 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    6. Compare the chromosome counts and genetic outcomes of daughter cells produced by mitosis versus meiosis.
+                </h3>
+
+                <button onclick="toggleAnswer(6)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-6"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    • <strong>Mitosis:</strong> Produces 2 genetically identical diploid cells (46 chromosomes each) for body growth/repair.
+
+                    <br><br>
+
+                    • <strong>Meiosis:</strong> Produces 4 genetically different haploid cells (23 chromosomes each) for gametes (sperm/egg).
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-6" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-6"
+                    onclick="toggleMastery(6)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 7 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    7. How does the arrangement of collagen fibers differ between dense regular and dense irregular connective tissue?
+                </h3>
+
+                <button onclick="toggleAnswer(7)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-7"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    In <strong>dense regular connective tissue</strong>, collagen fibers are tightly packed in parallel bundles (providing strength in one direction, like in tendons).
+
+                    In <strong>dense irregular connective tissue</strong>, collagen fibers are arranged randomly in multiple directions (providing tensile strength in many directions, like in the dermis).
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-7" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-7"
+                    onclick="toggleMastery(7)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+
+        <!-- QUESTION 8 -->
+        <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+
+                <h3 class="font-semibold text-slate-900 text-sm sm:text-base">
+                    8. What are the two main cell types in nervous tissue, and what are their basic roles?
+                </h3>
+
+                <button onclick="toggleAnswer(8)"
+                    class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1.5 rounded transition-colors whitespace-nowrap self-end sm:self-auto">
+                    Toggle Answer
+                </button>
+            </div>
+
+            <div id="answer-8"
+                class="answer-content mt-3 pt-3 border-t border-slate-100 text-xs sm:text-sm text-slate-700">
+
+                <p class="font-medium text-indigo-700 mb-1">Answer:</p>
+
+                <p>
+                    • <strong>Neurons:</strong> Nerve cells that generate and transmit electrical nerve impulses.
+
+                    <br><br>
+
+                    • <strong>Neuroglia:</strong> Non-conductive cells that support, nourish, insulate, and protect neurons.
+                </p>
+            </div>
+
+            <div class="mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-t border-slate-100 pt-3">
+
+                <span id="mastery-label-8" class="text-xs text-slate-500">
+                    Finished reviewing this question?
+                </span>
+
+                <button id="mastery-8"
+                    onclick="toggleMastery(8)"
+                    class="w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center">
+                    ✓ I know this
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETION REWARD -->
+    <section id="completion-panel"
+        class="hidden mt-7 rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-center">
+
+        <p class="text-3xl mb-2">🏆</p>
+
+        <h2 class="text-lg font-extrabold text-emerald-900">
+            Study quest completed!
+        </h2>
+
+        <p class="text-sm text-emerald-800 mt-1">
+            You reviewed all 8 questions. Be proud of your progress!
+        </p>
+
+        <button onclick="resetMastery()"
+            class="mt-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-4 py-2">
+            Start another round
+        </button>
+    </section>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+    let allShown = false;
+
+    let mastered = new Set();
+
+    let secondsLeft = 25 * 60;
+
+    let timerInterval = null;
+
+
+    // MOTIVATIONAL QUOTES
+    const quotes = [
+        "You don't have to know everything today. Just learn one thing at a time.",
+        "Progress, not perfection. Keep going!",
+        "Future you will be glad you studied a little today.",
+        "A difficult topic becomes easier when you break it into small pieces.",
+        "You are building understanding, one question at a time.",
+        "Take a breath. Read it again. You can figure this out."
+    ];
+
+
+    // UPDATE STUDY PROGRESS
+    function updateProgress() {
+
+        const count = mastered.size;
+
+        document.getElementById("xp-count").textContent = count * 10;
+
+        document.getElementById("progress-label").textContent =
+            `${count} / 8 mastered`;
+
+        document.getElementById("progress-bar").style.width =
+            `${count / 8 * 100}%`;
+
+
+        const messages = [
+            "Every question you understand is a win. You’ve got this!",
+            "Nice start! Keep building your understanding.",
+            "You're making progress. Keep that momentum!",
+            "More than halfway there — keep it up!",
+            "Almost there! Your effort is adding up.",
+            "Amazing work! You completed your study quest! 🎉"
+        ];
+
+
+        const stage =
+            count === 8 ? 5 :
+            count >= 6 ? 4 :
+            count >= 4 ? 3 :
+            count >= 2 ? 2 :
+            count >= 1 ? 1 : 0;
+
+
+        document.getElementById("level-message").textContent =
+            messages[stage];
+
+
+        document.getElementById("completion-panel")
+            .classList.toggle("hidden", count !== 8);
+    }
+
+
+
+    // MARK QUESTION AS MASTERED
+    function toggleMastery(id) {
+
+        const button = document.getElementById(`mastery-${id}`);
+
+        const label = document.getElementById(`mastery-label-${id}`);
+
+
+        if (mastered.has(id)) {
+
+            mastered.delete(id);
+
+            button.textContent = "✓ I know this";
+
+            button.className =
+                "w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center";
+
+            label.textContent = "Finished reviewing this question?";
+
+        } else {
+
+            mastered.add(id);
+
+            button.textContent = "★ Mastered!";
+
+            button.className =
+                "w-full sm:w-auto rounded-lg border border-emerald-600 bg-emerald-600 text-white px-3 py-1.5 text-xs font-semibold text-center";
+
+            label.textContent = "Great job — you earned 10 XP!";
         }
 
-        function toggleAllAnswers() {
-            const answers = document.querySelectorAll('.answer-content');
-            const btn = document.getElementById('toggle-all-btn');
-            allShown = !allShown;
 
-            answers.forEach(ans => {
-                if (allShown) {
-                    ans.classList.add('show');
-                } else {
-                    ans.classList.remove('show');
-                }
-            });
+        updateProgress();
+    }
 
-            btn.textContent = allShown ? "Hide All Answers" : "Show All Answers";
+
+
+    // RESET STUDY PROGRESS
+    function resetMastery() {
+
+        mastered.clear();
+
+        for (let i = 1; i <= 8; i++) {
+
+            const button = document.getElementById(`mastery-${i}`);
+
+            button.textContent = "✓ I know this";
+
+            button.className =
+                "w-full sm:w-auto rounded-lg border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 px-3 py-1.5 text-xs font-semibold text-center";
+
+            document.getElementById(`mastery-label-${i}`).textContent =
+                "Finished reviewing this question?";
         }
-    </script>
+
+
+        updateProgress();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+
+    // RANDOM MOTIVATIONAL MESSAGE
+    function newQuote() {
+
+        const quote = document.getElementById("motivation-quote");
+
+        let next = quotes[Math.floor(Math.random() * quotes.length)];
+
+
+        if (quotes.length > 1 && next === quote.textContent) {
+
+            next = quotes[(quotes.indexOf(next) + 1) % quotes.length];
+        }
+
+
+        quote.textContent = next;
+    }
+
+
+
+    // DISPLAY TIMER
+    function renderTimer() {
+
+        const mins = Math.floor(secondsLeft / 60)
+            .toString().padStart(2, "0");
+
+        const secs = (secondsLeft % 60)
+            .toString().padStart(2, "0");
+
+
+        document.getElementById("timer-display").textContent =
+            `${mins}:${secs}`;
+    }
+
+
+
+    // START TIMER
+    function startTimer() {
+
+        if (timerInterval !== null) return;
+
+
+        document.getElementById("timer-message").textContent =
+            "Focus mode is on. One step at a time! 🌱";
+
+
+        timerInterval = setInterval(() => {
+
+            if (secondsLeft > 0) {
+
+                secondsLeft--;
+
+                renderTimer();
+
+            } else {
+
+                pauseTimer();
+
+                document.getElementById("timer-message").textContent =
+                    "Session complete! Take a short break. You did it! 🎉";
+
+                document.getElementById("timer-display").textContent =
+                    "00:00";
+            }
+
+        }, 1000);
+    }
+
+
+
+    // PAUSE TIMER
+    function pauseTimer() {
+
+        if (timerInterval !== null) {
+
+            clearInterval(timerInterval);
+
+            timerInterval = null;
+        }
+
+
+        document.getElementById("timer-message").textContent =
+            "Timer paused. Take your time.";
+    }
+
+
+
+    // RESET TIMER
+    function resetTimer() {
+
+        pauseTimer();
+
+        secondsLeft = 25 * 60;
+
+        renderTimer();
+
+        document.getElementById("timer-message").textContent =
+            "Fresh start. Ready when you are!";
+    }
+
+
+
+    // SHOW OR HIDE INDIVIDUAL ANSWER
+    function toggleAnswer(id) {
+
+        const el = document.getElementById(`answer-${id}`);
+
+        el.classList.toggle('show');
+    }
+
+
+
+    // SHOW OR HIDE ALL ANSWERS
+    function toggleAllAnswers() {
+
+        const answers = document.querySelectorAll('.answer-content');
+
+        const btn = document.getElementById('toggle-all-btn');
+
+        allShown = !allShown;
+
+
+        answers.forEach(ans => {
+
+            if (allShown) {
+
+                ans.classList.add('show');
+
+            } else {
+
+                ans.classList.remove('show');
+            }
+
+        });
+
+
+        btn.textContent = allShown
+            ? "Hide All Answers"
+            : "Show All Answers";
+    }
+
+</script>
+
 </body>
 </html>
